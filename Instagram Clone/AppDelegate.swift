@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        Parse.initialize(
+            with: ParseClientConfiguration(block: { (configuration:ParseMutableClientConfiguration) -> Void in
+                configuration.applicationId = "instagram-clone-backend"
+                configuration.clientKey = "makasla1905"  // set to nil assuming you have not set clientKey
+                configuration.server = "https://intense-brook-86264.herokuapp.com/parse"
+            })
+        )
+        // Code to initialize Parse
+        // (See above section 'Parse `initializeWithConfiguration` vs `setApplicationId`', if you have not already set it up)
+        
+        // check if user is logged in.
+        if PFUser.current() != nil {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let mainVC = storyboard.instantiateViewController(withIdentifier: "MainNavigationController")
+            self.window?.rootViewController = mainVC
+            self.window?.makeKeyAndVisible()
+        }
         return true
     }
 
